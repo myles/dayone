@@ -36,7 +36,7 @@ setup(
         'Markdown',
     ],
     
-    extra_require = {
+    extras_require = {
         'cli': [ 'clint', ]
     },
     
@@ -44,5 +44,7 @@ setup(
         'console_scripts': [
             'py-dayone = dayone.cli:main [cli]'
         ]
-    }
+    },
+    
+    test_suite = "tests"
 )

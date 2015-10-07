@@ -31,3 +31,21 @@ class TestEntryObject(unittest.TestCase):
 class TestJournalObject(unittest.TestCase):
     def setUp(self):
         self.journal = journal.Journal(JOURNAL_DAYONE_PATH)
+    
+    def test_get_entries(self):
+        self.journal.get_entries()
+        entries = self.journal.entries
+        self.assertTrue(entries)
+    
+    def test_filter_by_date(self):
+        entries = self.journal.filter_by_date(datetime.date.today())
+        self.assertTrue(entries)
+    
+    def test_filter_between_dates(self):
+        TODAY = datetime.date.today()
+        SEVEN_DAYS_AGO = TODAY - datetime.timedelta(days=7)
+        entries = self.journal.filter_between_dates(SEVEN_DAYS_AGO, TODAY)
+        self.assertTrue(entries)
+
+if __name__ == '__main__':
+    unittest.main()
