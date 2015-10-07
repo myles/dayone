@@ -32,10 +32,69 @@ WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
+import os
+import json
 import argparse
 
-from clint.textui import puts
+from clint import resources
+from clint.textui import prompt, puts, puts_err, validators, colored
+
+from .journal import Journal, Entry
+
+resources.init('myles', 'py-dayone')
+
+
+def setup(args):
+    if args.get('path', None):
+        path = args.get('path')
+    else:
+        path = prompt.query("Path to your DayOne journal.",
+                            validators=[validators.PathValidator()])
+
+    path = os.path.abspath(path)
+
+    if not os.path.exists(path):
+        puts_err(colored.red("%s does not exist." % path))
+        return False
+
+    config = json.dumps({'journal_dir': path})
+
+    resources.user.write('config.json', config)
+
+    puts(colored.green("Setup py-dayone."))
+
+
+def new(args, config):
+    e = Entry(config.get('journal_dir'))
+
+    
 
 
 def main():
-    puts("Hello, World!")
+    parser = argparse.ArgumentParser(
+        description="Command line interface for the Day One journaling " +
+                    "application.")
+
+    subparsers = parser.add_subparsers()
+
+    parser_setup = subparsers.add_parser('setup',
+                                         help="Setup py-dayone envourment.")
+    parser_setup.set_defaults(which='setup')
+    parser_setup.add_argument(
+        '--path', required=False, help="Path to your DayOne journal.")
+
+    parser_new = subparsers.add_parser('new',
+                                       help="Create a new journal entry.")
+    parser_new.set_defaults(which='new')
+    parser_new.add_argument(
+        '--date')
+
+    args = vars(parser.parse_args())
+
+    if args['which'] == 'setup':
+        setup(args)
+
+    config_file = resources.user.open('config.json')
+
+    if args['which'] == 'new':
+        new(args, json.loads(config_file))
