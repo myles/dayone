@@ -67,8 +67,6 @@ def setup(args):
 def new(args, config):
     e = Entry(config.get('journal_dir'))
 
-    
-
 
 def main():
     parser = argparse.ArgumentParser(
