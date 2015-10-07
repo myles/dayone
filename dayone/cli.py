@@ -36,5 +36,6 @@ import argparse
 
 from clint.textui import puts
 
+
 def main():
     puts("Hello, World!")
