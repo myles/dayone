@@ -2,6 +2,9 @@
 Day One Python Library
 ======================
 
+.. image:: https://travis-ci.org/myles/dayone.svg?branch=master
+    :target: https://travis-ci.org/myles/dayone
+
 A Python library and command line application for `Day One`_.
 
 .. _Day One: http://dayoneapp.com/
